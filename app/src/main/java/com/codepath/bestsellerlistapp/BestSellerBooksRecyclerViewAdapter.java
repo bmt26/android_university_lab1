@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.bestsellerlistapp.models.BestSellerBook;
 
 import java.util.List;
@@ -39,6 +40,10 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
         holder.mBookTitle.setText(books.get(position).title);
         holder.mBookAuthor.setText(books.get(position).author);
         holder.mBookRank.setText(String.valueOf(books.get(position).rank));
+        Glide.with(holder.mView)
+                .load(books.get(position).bookImageUrl)
+                .centerInside()
+                .into(holder.mBookImage);
         holder.mBookDescription.setText(books.get(position).description);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
