@@ -3,6 +3,7 @@ package com.codepath.bestsellerlistapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,8 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
         holder.mItem = books.get(position);
         holder.mBookTitle.setText(books.get(position).title);
         holder.mBookAuthor.setText(books.get(position).author);
+        holder.mBookRank.setText(String.valueOf(books.get(position).rank));
+        holder.mBookDescription.setText(books.get(position).description);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +62,9 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
         public final View mView;
         public final TextView mBookTitle;
         public final TextView mBookAuthor;
+        public final TextView mBookRank;
+        public final ImageView mBookImage;
+        public final TextView mBookDescription;
         public BestSellerBook mItem;
 
         public BookViewHolder(View view) {
@@ -66,6 +72,9 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
             mView = view;
             mBookTitle = (TextView) view.findViewById(R.id.book_title);
             mBookAuthor = (TextView) view.findViewById(R.id.book_author);
+            mBookRank = (TextView) view.findViewById(R.id.ranking);
+            mBookImage = (ImageView) view.findViewById(R.id.book_image);
+            mBookDescription = (TextView) view.findViewById(R.id.book_description);
         }
 
         @Override
