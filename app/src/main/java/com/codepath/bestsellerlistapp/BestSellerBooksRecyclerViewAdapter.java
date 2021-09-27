@@ -1,8 +1,12 @@
 package com.codepath.bestsellerlistapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,12 +23,14 @@ import java.util.List;
  */
 public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<BestSellerBooksRecyclerViewAdapter.BookViewHolder> {
 
+    private final Context context;
     private final List<BestSellerBook> books;
     private final OnListFragmentInteractionListener mListener;
 
-    public BestSellerBooksRecyclerViewAdapter(List<BestSellerBook> items, OnListFragmentInteractionListener listener) {
-        books = items;
-        mListener = listener;
+    public BestSellerBooksRecyclerViewAdapter(Context context, List<BestSellerBook> items, OnListFragmentInteractionListener listener) {
+        this.context = context;
+        this.books = items;
+        this.mListener = listener;
     }
 
     @Override
@@ -37,14 +43,22 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
     @Override
     public void onBindViewHolder(final BookViewHolder holder, int position) {
         holder.mItem = books.get(position);
+        holder.mBookRank.setText(String.valueOf(books.get(position).rank));
         holder.mBookTitle.setText(books.get(position).title);
         holder.mBookAuthor.setText(books.get(position).author);
-        holder.mBookRank.setText(String.valueOf(books.get(position).rank));
         Glide.with(holder.mView)
                 .load(books.get(position).bookImageUrl)
                 .centerInside()
                 .into(holder.mBookImage);
         holder.mBookDescription.setText(books.get(position).description);
+        holder.mBuyBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uriUrl = Uri.parse(books.get(holder.getAdapterPosition()).amazonUrl);
+                Intent launchBrowser = new Intent(String.valueOf(view.getContext()), uriUrl);
+                view.getContext().startActivity(launchBrowser);
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,21 +79,23 @@ public class BestSellerBooksRecyclerViewAdapter extends RecyclerView.Adapter<Bes
 
     public class BookViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
+        public final TextView mBookRank;
         public final TextView mBookTitle;
         public final TextView mBookAuthor;
-        public final TextView mBookRank;
         public final ImageView mBookImage;
         public final TextView mBookDescription;
+        public final Button mBuyBook;
         public BestSellerBook mItem;
 
         public BookViewHolder(View view) {
             super(view);
             mView = view;
+            mBookRank = (TextView) view.findViewById(R.id.ranking);
             mBookTitle = (TextView) view.findViewById(R.id.book_title);
             mBookAuthor = (TextView) view.findViewById(R.id.book_author);
-            mBookRank = (TextView) view.findViewById(R.id.ranking);
             mBookImage = (ImageView) view.findViewById(R.id.book_image);
             mBookDescription = (TextView) view.findViewById(R.id.book_description);
+            mBuyBook = (Button) view.findViewById(R.id.buy_button);
         }
 
         @Override
